@@ -16,6 +16,7 @@ import {
 
 import { useSubcategories } from "@/hooks/use-subcategories";
 import { useState } from "react";
+import { notifications } from "@mantine/notifications";
 import axios from "axios";
 
 type CreateProductForm = {
@@ -91,8 +92,18 @@ export default function CreateProductPage() {
         },
       });
       setForm(defaultProductForm);
+      notifications.show({
+        title: "Sukses",
+        message: "Produk berhasil ditambahkan ke dalam sistem.",
+        color: "green",
+      });
     } catch (error) {
-      console.log(error);
+      console.log("Gagal menambahkan produk:", error);
+      notifications.show({
+        title: "Gagal",
+        message: " Produk gagal ditambahkan ke dalam sistem.",
+        color: "red",
+      });
     }
   };
 
