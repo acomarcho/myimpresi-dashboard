@@ -16,6 +16,7 @@ import {
 
 import { useSubcategories } from "@/hooks/use-subcategories";
 import { useState } from "react";
+import { fromJSON } from "postcss";
 
 type CreateProductForm = {
   subcategory: string;
@@ -146,6 +147,7 @@ export default function CreateProductPage() {
               description: e.currentTarget.value,
             });
           }}
+          minRows={3}
           required
         />
         <TextInput
@@ -240,7 +242,22 @@ export default function CreateProductPage() {
           Tambah warna
         </Button>
         <Divider />
-        <Button>Buat produk</Button>
+        <Button
+          disabled={
+            !form.subcategory ||
+            !form.sku ||
+            !form.name ||
+            !form.price ||
+            !form.soldAmount ||
+            !form.minimumQuantity ||
+            !form.description ||
+            !form.material ||
+            !form.size ||
+            !form.mainImage
+          }
+        >
+          Buat produk
+        </Button>
       </Stack>
     </Container>
   );
