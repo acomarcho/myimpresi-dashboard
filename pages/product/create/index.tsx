@@ -16,6 +16,7 @@ import {
 
 import { useSubcategories } from "@/hooks/use-subcategories";
 import { useState } from "react";
+import axios from "axios";
 
 type CreateProductForm = {
   subcategory: string;
@@ -60,6 +61,25 @@ export default function CreateProductPage() {
         };
       })
     : [];
+
+  const saveProduct = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("mainImage", form.mainImage!);
+      form.additionalImages.forEach((img) => {
+        formData.append("additionalImages", img);
+      });
+      formData.append("product", JSON.stringify(form));
+      await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/product`, formData, {
+        headers: {
+          "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
+      setForm(defaultProductForm);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container p={16}>
@@ -265,6 +285,9 @@ export default function CreateProductPage() {
             !form.size ||
             !form.mainImage
           }
+          onClick={() => {
+            saveProduct();
+          }}
         >
           Buat produk
         </Button>
