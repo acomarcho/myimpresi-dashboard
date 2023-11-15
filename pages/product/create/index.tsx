@@ -49,10 +49,16 @@ const defaultProductForm: CreateProductForm = {
   colors: [],
 };
 
+const pageStatus = {
+  normal: "NORMAL",
+  loading: "LOADING",
+};
+
 export default function CreateProductPage() {
   const [form, setForm] = useState(defaultProductForm);
   const [color, setColor] = useState("#000000");
   const { subcategories } = useSubcategories();
+  const [status, setStatus] = useState(pageStatus.normal);
 
   const subcategoriesData = subcategories
     ? subcategories.map((s) => {
@@ -65,6 +71,7 @@ export default function CreateProductPage() {
 
   const saveProduct = async () => {
     try {
+      setStatus(pageStatus.loading);
       const formData = new FormData();
       formData.append("mainImage", form.mainImage!);
       form.additionalImages.forEach((img) => {
@@ -104,6 +111,8 @@ export default function CreateProductPage() {
         message: " Produk gagal ditambahkan ke dalam sistem.",
         color: "red",
       });
+    } finally {
+      setStatus(pageStatus.normal);
     }
   };
 
@@ -309,13 +318,14 @@ export default function CreateProductPage() {
             !form.description ||
             !form.material ||
             !form.size ||
-            !form.mainImage
+            !form.mainImage ||
+            status === pageStatus.loading
           }
           onClick={() => {
             saveProduct();
           }}
         >
-          Buat produk
+          {pageStatus.normal ? "Buat produk" : "..."}
         </Button>
       </Stack>
     </Container>
