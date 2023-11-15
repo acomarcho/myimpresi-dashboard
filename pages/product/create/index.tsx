@@ -69,7 +69,22 @@ export default function CreateProductPage() {
       form.additionalImages.forEach((img) => {
         formData.append("additionalImages", img);
       });
-      formData.append("product", JSON.stringify(form));
+      formData.append(
+        "product",
+        JSON.stringify({
+          name: form.name,
+          price: form.price,
+          soldAmount: form.soldAmount,
+          minimumOrder: form.minimumQuantity,
+          description: form.description,
+          subcategoryId: form.subcategory,
+          isFeaturedAtCategory: false,
+          colors: form.colors,
+          material: form.material,
+          size: form.size,
+          sku: form.sku,
+        })
+      );
       await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/product`, formData, {
         headers: {
           "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
