@@ -6,13 +6,15 @@ import {
   FileInput,
   NumberInput,
   Textarea,
-  NativeSelect,
+  Select,
   Button,
 } from "@mantine/core";
 
+import { useSubcategories } from "@/hooks/use-subcategories";
 import { useState } from "react";
 
 type CreateProductForm = {
+  subcategory: string;
   sku: string;
   name: string;
   price: string | number;
@@ -26,6 +28,7 @@ type CreateProductForm = {
 };
 
 const defaultProductForm: CreateProductForm = {
+  subcategory: "",
   sku: "",
   name: "",
   price: "",
@@ -40,12 +43,32 @@ const defaultProductForm: CreateProductForm = {
 
 export default function CreateProductPage() {
   const [form, setForm] = useState(defaultProductForm);
+  const { subcategories } = useSubcategories();
+
+  const subcategoriesData = subcategories
+    ? subcategories.map((s) => {
+        return {
+          label: s.name,
+          value: s.id,
+        };
+      })
+    : [];
 
   return (
     <Container p={16}>
       <Stack>
         <Title order={1}>Buat produk</Title>
-        <NativeSelect label="Subkategori" data={["a", "b", "c"]} />
+        <Select
+          label="Subkategori"
+          data={subcategoriesData}
+          searchable
+          clearable
+          value={form.subcategory}
+          onChange={(e) => {
+            setForm({ ...form, subcategory: e });
+          }}
+          required
+        />
         <TextInput
           label="SKU"
           value={form.sku}
@@ -55,6 +78,7 @@ export default function CreateProductPage() {
               sku: e.currentTarget.value,
             });
           }}
+          required
         />
         <TextInput
           label="Nama"
@@ -65,6 +89,7 @@ export default function CreateProductPage() {
               name: e.currentTarget.value,
             });
           }}
+          required
         />
         <NumberInput
           label="Harga"
@@ -76,6 +101,7 @@ export default function CreateProductPage() {
               price: e,
             });
           }}
+          required
         />
         <NumberInput
           label="Banyak terjual"
@@ -87,6 +113,7 @@ export default function CreateProductPage() {
               soldAmount: e,
             });
           }}
+          required
         />
         <NumberInput
           label="Minimum pembelian (dalam pcs)"
@@ -98,6 +125,7 @@ export default function CreateProductPage() {
               minimumQuantity: e,
             });
           }}
+          required
         />
         <Textarea
           label="Deskripsi"
@@ -109,6 +137,7 @@ export default function CreateProductPage() {
               description: e.currentTarget.value,
             });
           }}
+          required
         />
         <TextInput
           label="Material"
@@ -119,6 +148,7 @@ export default function CreateProductPage() {
               material: e.currentTarget.value,
             });
           }}
+          required
         />
         <TextInput
           label="Ukuran"
@@ -129,6 +159,7 @@ export default function CreateProductPage() {
               size: e.currentTarget.value,
             });
           }}
+          required
         />
         <FileInput
           label="Gambar utama"
@@ -140,6 +171,7 @@ export default function CreateProductPage() {
               mainImage: e,
             });
           }}
+          required
         />
         <FileInput
           label="Gambar pelengkap"
