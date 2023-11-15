@@ -16,7 +16,7 @@ export const useSubcategories = () => {
     axios.get<SubcategoriesResponse>(url).then((res) => res.data);
 
   const { data, error, isLoading } = useSWR(
-    `https://api.myimpresi.marchotridyo.com/subcategory`,
+    `${process.env.NEXT_PUBLIC_BE_URL}/subcategory`,
     fetcher
   );
 
