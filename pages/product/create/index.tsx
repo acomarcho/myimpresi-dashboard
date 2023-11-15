@@ -58,6 +58,7 @@ export default function CreateProductPage() {
     <Container p={16}>
       <Stack>
         <Title order={1}>Buat produk</Title>
+        <Title order={2}>Detail produk</Title>
         <Select
           label="Subkategori"
           data={subcategoriesData}
@@ -65,7 +66,7 @@ export default function CreateProductPage() {
           clearable
           value={form.subcategory}
           onChange={(e) => {
-            setForm({ ...form, subcategory: e });
+            setForm({ ...form, subcategory: e ? e : "" });
           }}
           required
         />
