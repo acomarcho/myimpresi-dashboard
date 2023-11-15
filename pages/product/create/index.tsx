@@ -16,7 +16,6 @@ import {
 
 import { useSubcategories } from "@/hooks/use-subcategories";
 import { useState } from "react";
-import { fromJSON } from "postcss";
 
 type CreateProductForm = {
   subcategory: string;
@@ -77,6 +76,7 @@ export default function CreateProductPage() {
           onChange={(e) => {
             setForm({ ...form, subcategory: e ? e : "" });
           }}
+          placeholder="Pilih subkategori"
           required
         />
         <TextInput
@@ -88,6 +88,7 @@ export default function CreateProductPage() {
               sku: e.currentTarget.value,
             });
           }}
+          placeholder="JKCPU4021007"
           required
         />
         <TextInput
@@ -99,6 +100,7 @@ export default function CreateProductPage() {
               name: e.currentTarget.value,
             });
           }}
+          placeholder="LEITI"
           required
         />
         <NumberInput
@@ -111,6 +113,7 @@ export default function CreateProductPage() {
               price: e,
             });
           }}
+          placeholder="210000"
           required
         />
         <NumberInput
@@ -123,6 +126,7 @@ export default function CreateProductPage() {
               soldAmount: e,
             });
           }}
+          placeholder="200"
           required
         />
         <NumberInput
@@ -135,6 +139,7 @@ export default function CreateProductPage() {
               minimumQuantity: e,
             });
           }}
+          placeholder="20"
           required
         />
         <Textarea
@@ -148,6 +153,7 @@ export default function CreateProductPage() {
             });
           }}
           minRows={3}
+          placeholder="Jam dinding dengan diameter besar ini mampu menjadi pusat perhatian yang menarik untuk ruangan anda. Selain sebagai penunjuk waktu, jam dinding LEITI juga mampu sebagai penambah dekorasi yang manis"
           required
         />
         <TextInput
@@ -159,6 +165,7 @@ export default function CreateProductPage() {
               material: e.currentTarget.value,
             });
           }}
+          placeholder="Frame plastik polytyrene, tutup kaca"
           required
         />
         <TextInput
@@ -170,6 +177,7 @@ export default function CreateProductPage() {
               size: e.currentTarget.value,
             });
           }}
+          placeholder="40 cm"
           required
         />
         <FileInput
@@ -182,6 +190,7 @@ export default function CreateProductPage() {
               mainImage: e,
             });
           }}
+          placeholder="Pilih file gambar utama"
           required
         />
         <FileInput
@@ -195,6 +204,7 @@ export default function CreateProductPage() {
               additionalImages: e,
             });
           }}
+          placeholder="Pilih file gambar pelengkap (bisa lebih dari satu)"
         />
         <Divider />
         <Title order={2}>Warna produk</Title>
