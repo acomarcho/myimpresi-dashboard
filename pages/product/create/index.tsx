@@ -8,6 +8,10 @@ import {
   Textarea,
   Select,
   Button,
+  Text,
+  Divider,
+  Group,
+  ColorPicker,
 } from "@mantine/core";
 
 import { useSubcategories } from "@/hooks/use-subcategories";
@@ -25,6 +29,7 @@ type CreateProductForm = {
   size: string;
   mainImage: File | null;
   additionalImages: File[];
+  colors: string[];
 };
 
 const defaultProductForm: CreateProductForm = {
@@ -39,10 +44,12 @@ const defaultProductForm: CreateProductForm = {
   size: "",
   mainImage: null,
   additionalImages: [],
+  colors: [],
 };
 
 export default function CreateProductPage() {
   const [form, setForm] = useState(defaultProductForm);
+  const [color, setColor] = useState("#000000");
   const { subcategories } = useSubcategories();
 
   const subcategoriesData = subcategories
@@ -58,6 +65,7 @@ export default function CreateProductPage() {
     <Container p={16}>
       <Stack>
         <Title order={1}>Buat produk</Title>
+        <Divider />
         <Title order={2}>Detail produk</Title>
         <Select
           label="Subkategori"
@@ -186,6 +194,52 @@ export default function CreateProductPage() {
             });
           }}
         />
+        <Divider />
+        <Title order={2}>Warna produk</Title>
+        {form.colors.length === 0 && (
+          <Text>Anda belum memberikan data warna pada produk.</Text>
+        )}
+        {form.colors.length > 0 && (
+          <Stack>
+            {form.colors.map((c) => {
+              return (
+                <Group key={c}>
+                  <TextInput disabled value={c} />
+                  <div
+                    className="shadow-md w-[16px] h-[16px] rounded-full"
+                    style={{ background: c }}
+                  />
+                  <Button
+                    onClick={() => {
+                      setForm({
+                        ...form,
+                        colors: form.colors.filter((color) => color !== c),
+                      });
+                    }}
+                  >
+                    Hapus warna
+                  </Button>
+                </Group>
+              );
+            })}
+          </Stack>
+        )}
+        <Title order={3}>Input warna</Title>
+        <ColorPicker value={color} onChange={(e) => setColor(e)} />
+        <Button
+          onClick={() => {
+            if (color) {
+              setForm({
+                ...form,
+                colors: [...form.colors, color],
+              });
+              setColor("");
+            }
+          }}
+        >
+          Tambah warna
+        </Button>
+        <Divider />
         <Button>Buat produk</Button>
       </Stack>
     </Container>
