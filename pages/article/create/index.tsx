@@ -65,7 +65,9 @@ export default function CreateArticlePage() {
           }}
         />
         <Divider />
-        <Button>Buat artikel</Button>
+        <Button disabled={!form.content || !form.name || !form.image}>
+          Buat artikel
+        </Button>
       </Stack>
     </Container>
   );
