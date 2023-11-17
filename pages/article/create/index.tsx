@@ -9,6 +9,8 @@ import {
   Textarea,
   Title,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
 import { useState } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
@@ -25,8 +27,48 @@ const defaultArticleForm: CreateArticleForm = {
   image: null,
 };
 
+const pageStatus = {
+  normal: "NORMAL",
+  loading: "LOADING",
+};
+
 export default function CreateArticlePage() {
   const [form, setForm] = useState<CreateArticleForm>(defaultArticleForm);
+  const [status, setStatus] = useState(pageStatus.normal);
+
+  const saveArticle = async () => {
+    try {
+      setStatus(pageStatus.loading);
+
+      const formData = new FormData();
+      formData.append("file", form.image!);
+      formData.append("title", form.name);
+      formData.append("content", form.content);
+
+      await axios.post(`${process.env.NEXT_PUBLIC_BE_URL}/article`, formData, {
+        headers: {
+          "X-API-Key": process.env.NEXT_PUBLIC_API_KEY,
+        },
+      });
+
+      setForm(defaultArticleForm);
+
+      notifications.show({
+        title: "Sukses",
+        message: "Artikel berhasil ditambahkan ke dalam sistem.",
+        color: "green",
+      });
+    } catch (error) {
+      console.log("Gagal menambahkan artikel:", error);
+      notifications.show({
+        title: "Gagal",
+        message: "Artikel gagal ditambahkan ke dalam sistem.",
+        color: "red",
+      });
+    } finally {
+      setStatus(pageStatus.normal);
+    }
+  };
 
   return (
     <Container p={16}>
@@ -92,7 +134,17 @@ export default function CreateArticlePage() {
           </Markdown>
         </Box>
         <Divider />
-        <Button disabled={!form.content || !form.name || !form.image}>
+        <Button
+          disabled={
+            !form.content ||
+            !form.name ||
+            !form.image ||
+            status === pageStatus.loading
+          }
+          onClick={() => {
+            saveArticle();
+          }}
+        >
           Buat artikel
         </Button>
       </Stack>
