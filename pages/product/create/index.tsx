@@ -12,6 +12,7 @@ import {
   Divider,
   Group,
   ColorPicker,
+  Checkbox,
 } from "@mantine/core";
 
 import { useSubcategories } from "@/hooks/use-subcategories";
@@ -268,13 +269,28 @@ export default function CreateProductPage() {
         )}
         {form.colors.length > 0 && (
           <Stack>
-            {form.colors.map((c) => {
+            {form.colors.map((c, i) => {
               return (
-                <Group key={c}>
+                <Group key={i}>
                   <TextInput disabled value={c} />
                   <div
                     className="shadow-md w-[16px] h-[16px] rounded-full"
-                    style={{ background: c }}
+                    style={{
+                      background:
+                        c !== "MIX"
+                          ? c
+                          : `conic-gradient(
+                      from 90deg,
+                      violet,
+                      indigo,
+                      blue,
+                      green,
+                      yellow,
+                      orange,
+                      red,
+                      violet
+                    )`,
+                    }}
                   />
                   <Button
                     onClick={() => {
@@ -306,6 +322,23 @@ export default function CreateProductPage() {
         >
           Tambah warna
         </Button>
+        <Checkbox
+          checked={form.colors.includes("MIX")}
+          onChange={(e) => {
+            if (e.currentTarget.checked) {
+              setForm({
+                ...form,
+                colors: [...form.colors, "MIX"],
+              });
+            } else {
+              setForm({
+                ...form,
+                colors: form.colors.filter((c) => c !== "MIX"),
+              });
+            }
+          }}
+          label="Bisa custom warna?"
+        />
         <Divider />
         <Button
           disabled={
